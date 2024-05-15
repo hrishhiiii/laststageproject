@@ -1,0 +1,66 @@
+<!-- product_detail.html -->
+{% load static %}
+
+<!-- Add your CSS links here -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} Detail</title>
+</head>
+<body>
+
+<header>
+    <!-- Add your header content here -->
+    {% include 'header.html' %}
+</header>
+
+<section class="product_detail_section layout_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="product_image">
+                    <!-- Displaying product image -->
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="product_details">
+                    <h2>{{ product.name }}</h2>
+                    <p>Description: {{ product.description }}</p>
+                    <h3>Price: ${{ product.price }}</h3>
+                    <div class="action_buttons">
+                        {% if user.is_authenticated %}
+                            {% comment %} <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a> {% endcomment %}
+                            <a href="#" class="btn btn-success">Buy Now</a>
+                        {% else %}
+                            <p>Please <a href="{% url 'login' %}">login</a> to add to cart or buy.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <!-- Add your footer content here -->
+    {% include 'footer.html' %}
+</footer>
+
+<!-- Add your JavaScript links here -->
+<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
