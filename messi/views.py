@@ -28,7 +28,7 @@ def signup(request):
     
         return redirect('user_login')
     return render(request, 'signup.html')
-from .models import  UserProfile
+from .models import  UserProfile,CartItem,Product
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 def user_login(request):
@@ -77,3 +77,40 @@ def product_detail(request, pk):
 
 def contact(request):
     return render(request,"contact.html")
+from django.contrib.auth.decorators import login_required
+@login_required
+def cart(request):
+    cart_items = CartItem.objects.filter(user=request.user)  # Filter cart items for the logged-in user
+    total_quantity = sum(item.quantity for item in cart_items)
+    total_price = sum(item.total() for item in cart_items)
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total_quantity': total_quantity, 'total_price': total_price})
+
+from django.contrib import messages
+
+@login_required
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    cart_item, created = CartItem.objects.get_or_create(user=request.user, product=product)
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+    return redirect('cart')
+
+    # Check if the user is authenticated
+   
+
+@login_required
+def remove_from_cart(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id, user=request.user)
+    cart_item.delete()
+    return redirect('cart')
+
+@login_required
+def update_cart(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id, user=request.user)
+    if request.method == 'POST':
+        quantity = request.POST.get('quantity')
+        if quantity.isdigit() and int(quantity) > 0:
+            cart_item.quantity = int(quantity)
+            cart_item.save()
+    return redirect('cart')

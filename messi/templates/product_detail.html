@@ -42,10 +42,10 @@
                     <h3>Price: ${{ product.price }}</h3>
                     <div class="action_buttons">
                         {% if user.is_authenticated %}
-                            {% comment %} <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a> {% endcomment %}
-                            <a href="#" class="btn btn-success">Buy Now</a>
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+                            {% comment %} <a href="#" class="btn btn-success">Buy Now</a> {% endcomment %}
                         {% else %}
-                            <p>Please <a href="{% url 'login' %}">login</a> to add to cart or buy.</p>
+                            <p>Please <a href="{% url 'user_login' %}">login</a> to add to cart or buy.</p>
                         {% endif %}
                     </div>
                 </div>
