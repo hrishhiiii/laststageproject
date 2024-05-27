@@ -1942,9 +1942,10 @@ ol {
 
 .footer {
 	background: #111111;
-	padding-top: 10px;
+	padding-top: 20px;
 	width: 100%; /* Adjust width as needed */
-	height: 350px; 
+	height: 400px; 
+	margin-top: 40px;
 	/* Adjust height as needed */
 }
 
@@ -3855,4 +3856,7 @@ ol {
 	.categories__text:before {
 		height: 250px;
 	}
+
+
+	
 }

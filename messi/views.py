@@ -97,7 +97,7 @@ def add_to_cart(request, product_id):
     return redirect('cart')
 
     # Check if the user is authenticated
-   
+from .forms import BillingDetailsForm
 
 @login_required
 def remove_from_cart(request, cart_item_id):
@@ -114,3 +114,41 @@ def update_cart(request, cart_item_id):
             cart_item.quantity = int(quantity)
             cart_item.save()
     return redirect('cart')
+
+def checkout(request):
+    if request.method == 'POST':
+        form = BillingDetailsForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            billing_details, created = BillingDetails.objects.get_or_create(user=user)
+            if not created:
+                # If billing details already exist, update them with the form data
+                billing_details.name = form.cleaned_data['name']
+                billing_details.phone_number = form.cleaned_data['phone_number']
+                billing_details.email = form.cleaned_data['email']
+                billing_details.address = form.cleaned_data['address']
+                billing_details.postal_code = form.cleaned_data['postal_code']
+                billing_details.company_name = form.cleaned_data['company_name']
+                billing_details.save()
+
+            # Process the order
+            cart_items = CartItem.objects.filter(user=user)
+            total_price = sum(item.total() for item in cart_items)
+            order = Order.objects.create(user=user, total_price=total_price)
+            for cart_item in cart_items:
+                OrderItem.objects.create(order=order, cart_item=cart_item, quantity=cart_item.quantity)
+            cart_items.delete()  # Clear the cart after placing the order
+
+            return redirect('order_confirmation', order_id=order.id)
+    else:
+        form = BillingDetailsForm()
+    
+    cart_items = CartItem.objects.filter(user=request.user)
+    total_price = sum(item.total() for item in cart_items)
+    return render(request, 'checkout.html', {'form': form, 'cart_items': cart_items, 'total_price': total_price})
+from .forms import ProductForm,BillingDetails
+from django.contrib.auth.decorators import login_required
+from .models import Product, UserProfile, CartItem,Order,OrderItem
+def order_confirmation(request, order_id):
+    order = Order.objects.get(id=order_id)
+    return render(request, 'order_confirmation.html', {'order': order})

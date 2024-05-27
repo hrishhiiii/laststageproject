@@ -39,7 +39,7 @@
                 <div class="product_details">
                     <h2>{{ product.name }}</h2>
                     <p>Description: {{ product.description }}</p>
-                    <h3>Price: ${{ product.price }}</h3>
+                    <h3>Price: Rs.{{ product.price }}</h3>
                     <div class="action_buttons">
                         {% if user.is_authenticated %}
                             <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
