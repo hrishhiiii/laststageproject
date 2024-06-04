@@ -17,6 +17,10 @@ urlpatterns=[
     path('update-cart/<int:cart_item_id>/', views.update_cart, name='update_cart'),
     path('checkout/', views.checkout, name='checkout'),
     path('order_confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
+    path('razorpay/payment/', views.razorpay_payment, name='razorpay_payment'),
+    path('receipt/', views.receipt, name='receipt'),
+
+
     
 
 

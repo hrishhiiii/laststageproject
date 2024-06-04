@@ -152,3 +152,37 @@ from .models import Product, UserProfile, CartItem,Order,OrderItem
 def order_confirmation(request, order_id):
     order = Order.objects.get(id=order_id)
     return render(request, 'order_confirmation.html', {'order': order})
+
+
+import razorpay
+import razorpay
+from django.conf import settings
+
+client=razorpay.Client(auth=(settings.RAZORPAY_KEY_ID,settings.RAZORPAY_KEY_SECRET))
+
+from django.shortcuts import redirect
+from django.conf import settings
+
+from django.http import JsonResponse
+
+def razorpay_payment(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        order = Order.objects.get(id=order_id)
+        total_amount = order.total_price  # Assuming you have a field 'total_price' in your Order model
+        # Create a Razorpay payment object here and return the response
+        # After successful payment, redirect to the receipt URL
+        return redirect('receipt',order_id=order_id)
+    return JsonResponse({'error': 'Invalid Request'})
+
+
+from django.shortcuts import render
+from django.shortcuts import render
+
+def receipt(request):
+    # Retrieve the latest order from the database (assuming the latest order is the one to display)
+    latest_order = Order.objects.latest('id')
+
+    context = {'order': latest_order}
+    return render(request, 'receipt.html', context) 
+

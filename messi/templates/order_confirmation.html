@@ -111,7 +111,7 @@
         "description": "Order #{{ order.id }}",
         "image": "{% static 'path_to_your_logo.png' %}",
         "handler": function (response){
-            {% comment %} window.location.href = "{% url 'receipt' %}"; {% endcomment %}
+            window.location.href = "{% url 'receipt' %}";
         },
         "theme": {
             "color": "#3399cc"
