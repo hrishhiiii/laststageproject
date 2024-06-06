@@ -186,3 +186,14 @@ def receipt(request):
     context = {'order': latest_order}
     return render(request, 'receipt.html', context) 
 
+from django.shortcuts import render
+from django.http import JsonResponse
+from messi.models import CartItem  # Import your CartItem model
+
+def cart_count(request):
+    if request.user.is_authenticated:
+        cart_count = CartItem.objects.filter(user=request.user).count()
+    else:
+        cart_count = 0
+
+    return JsonResponse({'cart_count': cart_count})

@@ -19,6 +19,8 @@ urlpatterns=[
     path('order_confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
     path('razorpay/payment/', views.razorpay_payment, name='razorpay_payment'),
     path('receipt/', views.receipt, name='receipt'),
+    path('cart/count/', views.cart_count, name='cart_count'),
+
 
 
     

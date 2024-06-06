@@ -59,8 +59,10 @@
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
                     <a href="#"><img src="{% static 'img/icon/heart.png' %}" alt=""></a>
-                    <a href="#"><img src="{% static 'img/icon/cart.png' %}" alt=""> <span>0</span></a>
+                    <a href="{% url 'cart' %}"><img src="{% static 'img/icon/cart.png' %}" alt=""> 
+                    <span id="cart-count"><0/span>
                     <div class="price">RS 0.00</div>
+                </a>
                 </div>
             </div>
         </div>
@@ -68,3 +70,24 @@
     </div>
 </header>
 <!-- Header Section End -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function updateCartCount() {
+        $.ajax({
+            url: '{% url 'cart_count' %}',
+            method: 'GET',
+            success: function(response) {
+                $('#cart-count').text(response.cart_count);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                // Handle error
+            }
+        });
+    }
+
+    // Call updateCartCount() initially to update the cart count when the page loads
+    updateCartCount();
+</script>
+</body>
+</html>
